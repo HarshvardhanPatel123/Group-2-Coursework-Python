@@ -1,1 +1,49 @@
 #No importing!
+
+def main_menu():
+        print ("Please input the following action you would like to follow through with\n")
+        print("===== Main Menu =====")
+        print("1. View Policy holders details")
+        print("2. Add a new policy holder")
+        print("3. View Claims details ")
+        print("4. Edit a Claim")
+        print("5. Conduct Analysis")
+        print("6. Exit")
+        print("================")
+
+def choice():
+    choice = int(input_integer("Enter your option "))
+    if 1 <= choice <= 6:
+        return choice
+    else:
+        print ("Invalid choice")
+        return choice()
+
+def main():
+    while True:   
+        main_menu()
+        userchoice = choice()
+
+        if userchoice == 1:
+            view_policy_details()
+        elif userchoice == 2:
+            add_new_policy()
+        elif userchoice == 3:
+            view_claims_details()
+        elif userchoice == 4:
+            edit_claim()
+        elif userchoice == 5:
+            analysis()
+        elif userchoice == 6:
+            break
+        else:
+            print("Invalid choice, enter a number between 1 and 6 please")
+        
+
+
+def view_policy_details():
+    print ("Input your policy number specific to the policy holder you are looking for ")
+
+def add_new_policy():
+    print ("Input the following information to add a new policy holder ")
+    print ("Want to save your new addition to the file? ")
