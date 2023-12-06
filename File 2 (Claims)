@@ -1,1 +1,14 @@
 #No importing!
+
+def view_claims_details():
+    print ("Start by adding an unique claim number ")
+
+def edit_claim():
+    print ("Input your claim number specific to the claim you want to edit ")
+
+def analysis():
+    print ("Let's conduct the analysis on our 12 groups! ")
+    
+
+
+
