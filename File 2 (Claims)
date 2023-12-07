@@ -1,6 +1,5 @@
 #No importing!
 
-
 #Funtion to read claims
 def read_claims():
     claims = []
@@ -87,6 +86,7 @@ def edit_claim():
     print("Claim updated successfully.")
 
 
+# Function for displaying the claims
 def display_claims():
     claims = read_claims()
 
@@ -133,10 +133,3 @@ def claims_menu():
 
 # Run the program
 claims_menu()
-
-def analysis():
-    print ("Let's conduct the analysis on our 12 groups! ")
-    
-
-
-
