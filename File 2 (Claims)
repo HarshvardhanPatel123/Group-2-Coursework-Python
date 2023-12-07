@@ -1,5 +1,48 @@
 #No importing!
 
+def read_claims():
+    claims = []
+    try:
+        with open('claims.csv', 'r', encoding='utf-8') as file:
+            for line in file:
+                claims.append(line.strip().split(','))
+    except FileNotFoundError:
+        # If the file doesn't exist, it returns an empty list
+        pass
+    return claims
+
+def save_claims(claims):
+    with open('claims.csv', 'w', encoding='utf-8') as file:
+        for claim in claims:
+            file.write(','.join(claim) + '\n')
+
+def add_claim():
+    claims = read_claims()
+    claim_number = input("Enter claim number (C followed by 5 digits): ")
+    policy_number = input("Enter policy number (P followed by 7 digits): ")
+    claim_amount = input("Enter claim amount: ")
+
+    # Validation
+    if not claim_number.startswith('C') or len(claim_number) != 6:
+        print("Invalid claim number format.")
+        return
+    if not policy_number.startswith('P') or len(policy_number) != 8:
+        print("Invalid policy number format.")
+        return
+    if not claim_amount.isdigit():
+        print("Claim amount should be a numeric value.")
+        return
+
+    # Check for uniqueness of claim number
+    for claim in claims:
+        if claim_number == claim[0]:
+            print("Claim number already exists.")
+            return
+
+    claims.append([claim_number, policy_number, claim_amount])
+    save_claims(claims)
+    print("Claim added successfully.")
+
 def view_claims_details():
     print ("Start by adding an unique claim number ")
 
