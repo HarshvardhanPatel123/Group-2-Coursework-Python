@@ -1,5 +1,7 @@
 #No importing!
 
+
+#Funtion to read claims
 def read_claims():
     claims = []
     try:
@@ -11,43 +13,126 @@ def read_claims():
         pass
     return claims
 
+#Function to save claims
 def save_claims(claims):
     with open('claims.csv', 'w', encoding='utf-8') as file:
         for claim in claims:
             file.write(','.join(claim) + '\n')
 
+#Function to generate next claim number
+def generate_next_claim_number(claims):
+    if not claims:
+        return 'C00001'
+    last_claim = claims[-1][0]
+    if last_claim.startswith('C') and last_claim[1:].isdigit():
+        next_number = int(last_claim[1:]) + 1
+        return f'C{next_number:05d}'
+    else:
+        # In case the last claim number is not in the expected format
+        return 'C00001'
+
+#Function to add claims
 def add_claim():
     claims = read_claims()
-    claim_number = input("Enter claim number (C followed by 5 digits): ")
+    claim_number = generate_next_claim_number(claims)
     policy_number = input("Enter policy number (P followed by 7 digits): ")
-    claim_amount = input("Enter claim amount: ")
-
-    # Validation
-    if not claim_number.startswith('C') or len(claim_number) != 6:
-        print("Invalid claim number format.")
-        return
     if not policy_number.startswith('P') or len(policy_number) != 8:
         print("Invalid policy number format.")
         return
-    if not claim_amount.isdigit():
-        print("Claim amount should be a numeric value.")
-        return
-
-    # Check for uniqueness of claim number
-    for claim in claims:
-        if claim_number == claim[0]:
-            print("Claim number already exists.")
+    else:
+        claim_amount = input("Enter claim amount: ")
+        if not claim_amount.isdigit():
+            print("Claim amount should be a numeric value.")
             return
 
     claims.append([claim_number, policy_number, claim_amount])
     save_claims(claims)
     print("Claim added successfully.")
 
-def view_claims_details():
-    print ("Start by adding an unique claim number ")
 
+# Function to edit an existing claim
 def edit_claim():
-    print ("Input your claim number specific to the claim you want to edit ")
+    claims = read_claims()
+    claim_number = input("Enter the claim number to edit: ")
+
+    found = False
+    for claim in claims:
+        if claim[0] == claim_number:
+            found = True
+            new_policy_number = input("Enter new policy number (or press Enter to keep current): ")
+            # Validate policy number
+            if new_policy_number and not (new_policy_number.startswith('P') and len(new_policy_number) == 8):
+                print("Invalid policy number format.")
+                return
+            else:
+                new_claim_amount = input("Enter new claim amount (or press Enter to keep current): ")
+                # Validate claim amount
+                if new_claim_amount and not new_claim_amount.isdigit():
+                    print("Claim amount should be a numeric value.")
+                    return
+
+            # Update the claim if validation is passed
+            if new_policy_number:
+                claim[1] = new_policy_number
+            if new_claim_amount:
+                claim[2] = new_claim_amount
+
+            break
+
+    if not found:
+        print("Claim number not found.")
+        return
+
+    save_claims(claims)
+    print("Claim updated successfully.")
+
+
+def display_claims():
+    claims = read_claims()
+
+    # Check if there are any claims
+    if not claims:
+        print("No claims to display.")
+        return
+
+    # Constants for formatting
+    column_width = 20
+
+    # Separator
+    header = f" {'Claim Number':^{column_width}} {'Policy Number':^{column_width}} {'Claim Amount':^{column_width}} "
+    separator = '+' + '-' * (len(header) - 2) + '+'
+
+
+    # Rows
+    for claim in claims:
+        row = f"|{claim[0]:^{column_width}}|{claim[1]:^{column_width}}|{claim[2]:^{column_width}}|"
+        print(row)
+        print(separator)
+
+ 
+# Main function to run the claims menu
+def claims_menu():
+    while True:
+        print("\nClaims Menu")
+        print("1. View All Claims")
+        print("2. Add a New Claim")
+        print("3. Edit an Existing Claim")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            display_claims()
+        elif choice == '2':
+            add_claim()
+        elif choice == '3':
+            edit_claim()
+        elif choice == '4':
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+# Run the program
+claims_menu()
 
 def analysis():
     print ("Let's conduct the analysis on our 12 groups! ")
