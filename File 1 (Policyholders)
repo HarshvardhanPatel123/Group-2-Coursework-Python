@@ -2,11 +2,9 @@
 
 def main_menu():
         print ("Please input the following action you would like to follow through with\n")
-        print("===== Main Menu =====")
+        print("===== Policy Holder Menu =====")
         print("1. View Policy holders details")
         print("2. Add a new policy holder")
-        print("3. View Claims details ")
-        print("4. Edit a Claim")
         print("5. Conduct Analysis")
         print("6. Exit")
         print("================")
