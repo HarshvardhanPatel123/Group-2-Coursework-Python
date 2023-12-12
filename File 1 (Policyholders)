@@ -1,26 +1,100 @@
-#No importing!
-
-def main_menu():
-        print ("Please input the following action you would like to follow through with\n")
+def policy_menu_display():
+        print ("You have chosen to view the policyholder menu\n")
         print("===== Policy Holder Menu =====")
         print("1. View Policy holders details")
         print("2. Add a new policy holder")
-        print("5. Conduct Analysis")
-        print("6. Exit")
+        print("3. Exit")
         print("================")
 
 def choice():
     choice = int(input_integer("Enter your option "))
-    if 1 <= choice <= 6:
+    if 1 <= choice <= 3:
         return choice
     else:
         print ("Invalid choice")
         return choice()
 
-def main():
+def policy_menu():
     while True:   
-        main_menu()
+        policy_menu_display()
+        userchoice = choice()
+        if userchoice == 1:
+            view_policy_details()
+        elif userchoice == 2:
+            add_new_policy()
+        elif userchoice == 3:
+            break
+        else:
+            print("Invalid choice, enter a number between 1 and 3 please")
 
+
+def read_policy_holder():
+        policy_holder = []
+        try:
+                with open('policy_holders.csv', 'r', encoding = 'utf-8') as file:
+                          for line in file:
+                                  policy_holder.append(line.strip().split(','))
+        except FileNotFoundError:
+                pass
+        return policy_holder
+
+def save_policy_holder(policy_holder):
+        with open ('policy_holder.csv', 'w', encoding = 'utf-8') as file:
+                for holder in policy_holder:
+                        file.write(','.join(holder) + '\n')
+                
+        
+
+
+def view_policy_details():
+    policy_number = input("Input your policy number specific to the policy holder you are looking for ")
+    policy_holder = read_policy_holder()
+    exists = False
+    for holder in policy_holder:
+            if holder[0] ==policy_number:
+                    found = True
+                    print("\nPolicyholder Details:")
+                    print(f"Policy Number: {holder[0]}")
+                    print(f"First Name: {holder[1]}")
+                    print(f"Surname: {holder[2]}")
+                    print(f"Age: {holder[3]}")
+                    print(f"Gender: {holder[4]}")
+                    print(f"Area: {holder[5]}")
+            break
+    if exists == False:
+           print ("That policy number is not found in the file!")
+           
+
+def add_new_policy():
+    policy_number = input("Enter your new policy number (e.g P1906123)")
+    if policy_number.startswith('P') and policy_number[1:].isdigit() and len(policy_number) == 8:
+            policy_holder = read_policy_holder()
+            for holder in policy_holder:
+                    if holder[0] == policynumber:
+                            print("The policynumber you have inputted already correlates to another member!")
+                            return
+            firstname = input("First Name: ")
+            surname = input("Last name: ")
+            if not surname:
+                    print("Surname cannot be empty")
+                    return
+            age = input("Age (Young/Old): ").capitalize()
+            gender = input("Gender (Male/Female): ").capitalize()
+            area = input("Area (North/Central/South): ").capitalize()
+
+            new_policy_holder = [policy_number, first_name, surname, age, gender, area]
+            policy_holder.append(new_policy_holder)
+
+            save_policy_holder(policy_holder)
+            print("New policyholder added successfully.")
+    else:
+           print ("Invalid input, please use the example given")
+           return
+    
+
+
+
+    
 
 def input_integer(prompt):
     while True:
@@ -39,30 +113,6 @@ def input_float(prompt):
 
 
 if __name__ == "__main__":
-    main()
-
-        userchoice = choice()
-
-        if userchoice == 1:
-            view_policy_details()
-        elif userchoice == 2:
-            add_new_policy()
-        elif userchoice == 3:
-            view_claims_details()
-        elif userchoice == 4:
-            edit_claim()
-        elif userchoice == 5:
-            analysis()
-        elif userchoice == 6:
-            break
-        else:
-            print("Invalid choice, enter a number between 1 and 6 please")
-        
+    policy_menu()
 
 
-def view_policy_details():
-    print ("Input your policy number specific to the policy holder you are looking for ")
-
-def add_new_policy():
-    print ("Input the following information to add a new policy holder ")
-    print ("Want to save your new addition to the file? ")
