@@ -28,20 +28,7 @@ def policy_menu():
             print("Invalid choice, enter a number between 1 and 3 please")
 
 
-def read_policy_holder():
-        policy_holder = []
-        try:
-                with open('policy_holders.csv', 'r', encoding = 'utf-8') as file:
-                          for line in file:
-                                  policy_holder.append(line.strip().split(','))
-        except FileNotFoundError:
-                pass
-        return policy_holder
 
-def save_policy_holder(policy_holder):
-        with open ('policy_holder.csv', 'w', encoding = 'utf-8') as file:
-                for holder in policy_holder:
-                        file.write(','.join(holder) + '\n')
                 
         
 
