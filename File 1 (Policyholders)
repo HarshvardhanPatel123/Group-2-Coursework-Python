@@ -111,20 +111,6 @@ def add_new_policy(): #Function called if 2 is chosen in the policyholder menu
            print ("Invalid input, please use the example given")
            return
     
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
 def input_integer(prompt):
     while True:
         try:
