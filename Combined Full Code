@@ -6,29 +6,22 @@ def main_menu_display():
     print ("3. Analysis menu (Run an analysis or display a previous one)")
     print ("4. Exit")
 
-def main_choice():
-    main_choice = int(input_integer("Enter your option "))
-    if 1 <= main_choice <= 4:
-        return main_choice
-    else:
-        print ("Invalid choice")
-        return main_choice()
-
 def main_menu():
-    while True:
+    exit_code = False #Due to an issue concerning repeat menu calls, constant exit_code created to make sure the code is exitted when the user wishes
+    while not exit_code:
         main_menu_display()
-        main_userchoice = main_choice()
-        if main_userchoice == 1:
+        main_choice = input("Enter your option ")
+        if main_choice == '1':
             policy_menu()
-        elif main_userchoice == 2:
+        elif main_choice == '2':
             claims_menu()
-        elif main_userchoice == 3:
+        elif main_choice == '3':
             analysis_menu()
-        elif main_userchoice == 4:
-            return
-            break
+        elif main_choice == '4':
+            exit_code = True
         else:
-            print("Invalid choice, enter a number between 1 and 3 please")
+            print("Invalid choice, enter a number between 1 and 4 please")
+    print("Exiting. . .")
 
 
 def policy_menu_display(): #The function to create a menu for the policyholders
@@ -39,24 +32,17 @@ def policy_menu_display(): #The function to create a menu for the policyholders
         print("3. Exit to main menu")
         print("================")
 
-def policy_choice(): #Simple function to process the user choice for what to do, including choice number validation
-    choice = int(input_integer("Enter your option "))
-    if 1 <= choice <= 3:
-        return choice
-    else:
-        print ("Invalid choice")
-        return policy_choice()
 
 def policy_menu(): #Combining the choice correlation to the following function to be called
     while True:   
         policy_menu_display()
-        userchoice = policy_choice()
-        if userchoice == 1:
+        policy_choice = input("Enter your option ")
+        if policy_choice == '1':
             view_policy_details()
-        elif userchoice == 2:
+        elif policy_choice == '2':
             add_new_policy()
-        elif userchoice == 3:
-            main_menu()
+        elif policy_choice == '3':
+            return
         else:
             print("Invalid choice, enter a number between 1 and 3 please")
 
@@ -272,7 +258,7 @@ def claims_menu():
         elif claims_choice == '3':
             edit_claim()
         elif claims_choice == '4':
-            main_menu()
+            return
         else:
             print("Invalid choice. Please enter a number between 1 and 4.")
 
@@ -289,11 +275,23 @@ def analysis_menu():
     elif analysis_choice == '2':
         display_previous_analysis()
     elif analysis_choice == '3':
-        main_menu()
+        return
     else:
         print ("Invalid choice. Please enter a number between 1 and 3")
         
-        
+'''def run_analysis(policyholders, claims):
+    results = {
+        'number of policy holders': len(policyholders),
+        'number of claims': len(claims),
+        'claim frequency':
+        'smallest claim':
+        'largest claim':
+        'mean claim':
+        'standard deviation of claims':
+    }
+    return results
+'''    
+
 def analysis_new():
     print ("You have chosen to run an analysis on the current file")
 
@@ -323,3 +321,4 @@ def input_string(prompt): #Function for string validation, just in case
 
 if __name__ == "__main__":
     main_menu()
+
