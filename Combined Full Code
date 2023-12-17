@@ -1,5 +1,6 @@
-def main_menu_display():
+def main_menu_display(): #This function is for the main menu of the whole programme
     print ("\nWelcome to your claims and analysis tool\n")
+    print ("\nPlease ensure that this code and the Claims and Policyholder csv files are all saved in the same folder before you continue\n")
     print ("==== Main Menu ====")
     print ("1. Policyholder Menu (View or add Policyholders)")
     print ("2. Claim menu (View or add Claims)")
@@ -262,7 +263,7 @@ def claims_menu():
         else:
             print("Invalid choice. Please enter a number between 1 and 4.")
 
-
+# Function for the analysis menu
 def analysis_menu():
     print ("\nAnalysis Menu\n")
     print ("1. Carry out a new analysis")
@@ -279,6 +280,7 @@ def analysis_menu():
     else:
         print ("Invalid choice. Please enter a number between 1 and 3")
 
+# A function to call the largest claim
 def largest_claim(claims):
     if not claims:
         return None
@@ -290,6 +292,7 @@ def largest_claim(claims):
                 largest_claim = claim_amount
         return largest_claim
 
+# A function to call the smallest claim
 def smallest_claim(claims):
     if not claims:
         return None
@@ -301,6 +304,7 @@ def smallest_claim(claims):
                 smallest_claim = min(smallest_claim, claim_amount)
         return smallest_claim
 
+# A function to call the value for the average claim value
 def mean_claim(claims):
     if not claims:
         return None
@@ -311,6 +315,7 @@ def mean_claim(claims):
         mean_claim = total / (len(claims) - 1) #disregarding the first row
         return mean_claim
 
+# A function to call the standard deviation
 def std_dev_claim(claims):
     if len(claims) < 2:
         return None
@@ -321,8 +326,8 @@ def std_dev_claim(claims):
     std_dev = (diff_sum_squared / (len(claims) - 2)) ** 0.5 #Thus following the formula sum of the squares - square of the mean / n - 1 for the sample, rather than the population
     return std_dev
     
-
-def run_analysis(policyholders, claims): #Function to save the run_analysis into a dictionary format, utilising the earlier functions for the calculations
+#Function to save the run_analysis into a dictionary format, utilising the earlier functions for the calculations
+def run_analysis(policyholders, claims): 
     results = {
         'number of policy holders': len(policyholders),
         'number of claims': len(claims),
@@ -334,32 +339,43 @@ def run_analysis(policyholders, claims): #Function to save the run_analysis into
     }
     return results
     
-
+# A function to run a new analysis on policy holders and claims
+# Results are then displayed and saved to a file
 def analysis_new(): 
     print ("\nYou have chosen to run an analysis on the current file")
-    policy_holders = read_policy_holder()
+    policy_holders = read_policy_holder() # Read policy holder and claims data
     claims = read_claims()
-    results = run_analysis(policy_holders, claims)
-    for key, value in results.items():
+    results = run_analysis(policy_holders, claims) #Perfroms analysis
+    for key, value in results.items(): # Displays the results of the analysis
         print (key, ": ", value)
-    #save_analysis(results)
+    saved_analysis(results) # Saves the results of the analysis to a file
 
-
+# Function that displays the analysis results that were previously saved
 def display_previous_analysis():
     print ("\nYou have chosen to display the previous analysis")
-    saved_analysis = retrieve_saved_analysis()
-    #for nath to finish
+    saved_analysis = retrieve_saved_analysis() # Retreive and displays the saved analysis
 
+# Function that saves the provided anlysis results to a file
+# The user is prompted to enter the filename
 def saved_analysis(results):
     print("\nYou have successfully saved your analysis!")
-    #for nath
-    #For the analysis, as we might want to save a number of these the user should be asked for the
-    #filename that they want to save it as.
+    # The user assigns a name to the file with the analysis as they may want to save a number of them
+    filename = input_string("Enter the filename to save the analysis: ") + ".txt" 
+    with open(filename, 'w') as file: # Opens the file in write mode and saves the results
+        for key, value in results.items():
+            file.write(f"{key}: {value}\n")
+    print("\nAnalysis saved successfully in '{}'.".format(filename)) # Notifies the user that the file has been saved
 
+# A function to retrieve and display a previously saved analysis
 def retrieve_saved_analysis():
-    print (" ")
-    #for nath
-
+    filename = input_string("Enter the filename of the saved analysis: ") + ".txt" # Asks the user for the filename of the analysis they want
+    try: # Opens the file and reads its contents
+        with open(filename, 'r') as file:
+            print("\nSaved Analysis:")
+            for line in file:
+                print(line.strip())
+    except FileNotFoundError: # Notifies the user if the file is not found
+        print("\nFile not found. Please make sure the filename is correct.")
 
 
 def input_integer(prompt): #Function for integer validation, just in case
@@ -377,9 +393,5 @@ def input_string(prompt): #Function for string validation, just in case
         except ValueError:
             print("Invalid input.")
 
-
-
 if __name__ == "__main__":
     main_menu()
-
-
