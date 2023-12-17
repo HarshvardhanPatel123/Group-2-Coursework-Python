@@ -21,7 +21,7 @@ def main_menu():
             exit_code = True
         else:
             print("Invalid choice, enter a number between 1 and 4 please")
-    print("Exiting. . .")
+    print("Goodbye! Your information has been saved")
 
 
 def policy_menu_display(): #The function to create a menu for the policyholders
@@ -278,27 +278,87 @@ def analysis_menu():
         return
     else:
         print ("Invalid choice. Please enter a number between 1 and 3")
-        
-'''def run_analysis(policyholders, claims):
+
+def largest_claim(claims):
+    if not claims:
+        return None
+    else:
+        largest_claim = float('-inf') #Initialising with -infinity to avoid potential issues when comparing claim amounts 
+        for claim in claims[1:]: #Iteration throughout all claim values, continuously replacing the variable largest_claim with the next claim if larger until the end of all the claim values have been assessed
+            claim_amount = float(claim[2])
+            if claim_amount > largest_claim: 
+                largest_claim = claim_amount
+        return largest_claim
+
+def smallest_claim(claims):
+    if not claims:
+        return None
+    else:
+        smallest_claim = float('inf') #Initialising with +infinity to avoid potential issues when comparing claim amounts 
+        for claim in claims[1:]: #Iteration throughout all claim values, continuously replacing the variable largest_claim with the next claim if smaller until the end of all the claim values have been assessed
+            claim_amount = float(claim[2])
+            if claim_amount < smallest_claim: 
+                smallest_claim = min(smallest_claim, claim_amount)
+        return smallest_claim
+
+def mean_claim(claims):
+    if not claims:
+        return None
+    else:
+        total = 0
+        for claim in claims[1:]: #Iteration to find the total
+            total = total + float(claim[2])
+        mean_claim = total / (len(claims) - 1) #disregarding the first row
+        return mean_claim
+
+def std_dev_claim(claims):
+    if len(claims) < 2:
+        return None
+    mean = mean_claim(claims)
+    diff_sum_squared = 0 #Variable consisting of the sum of the squared differences, required to find the variance and therefore the standard deviation
+    for claim in claims[1:]: #Iterates through the claim values and minuses the mean from it, then squares the result
+        diff_sum_squared = diff_sum_squared + (float(claim[2]) - mean) ** 2
+    std_dev = (diff_sum_squared / (len(claims) - 2)) ** 0.5 #Thus following the formula sum of the squares - square of the mean / n - 1 for the sample, rather than the population
+    return std_dev
+    
+
+def run_analysis(policyholders, claims): #Function to save the run_analysis into a dictionary format, utilising the earlier functions for the calculations
     results = {
         'number of policy holders': len(policyholders),
         'number of claims': len(claims),
-        'claim frequency':
-        'smallest claim':
-        'largest claim':
-        'mean claim':
-        'standard deviation of claims':
+        'claim frequency': len(claims) / len(policyholders) if len(policyholders) > 0 else 0,
+        'smallest claim': smallest_claim(claims),
+        'largest claim': largest_claim(claims),
+        'mean claim': mean_claim(claims),
+        'standard deviation of claims': std_dev_claim(claims)
     }
     return results
-'''    
+    
 
-def analysis_new():
-    print ("You have chosen to run an analysis on the current file")
+def analysis_new(): 
+    print ("\nYou have chosen to run an analysis on the current file")
+    policy_holders = read_policy_holder()
+    claims = read_claims()
+    results = run_analysis(policy_holders, claims)
+    for key, value in results.items():
+        print (key, ": ", value)
+    #save_analysis(results)
 
 
 def display_previous_analysis():
-    print ("You have chosen to display the previous analysis")
-    
+    print ("\nYou have chosen to display the previous analysis")
+    saved_analysis = retrieve_saved_analysis()
+    #for nath to finish
+
+def saved_analysis(results):
+    print("\nYou have successfully saved your analysis!")
+    #for nath
+    #For the analysis, as we might want to save a number of these the user should be asked for the
+    #filename that they want to save it as.
+
+def retrieve_saved_analysis():
+    print (" ")
+    #for nath
 
 
 
@@ -321,4 +381,5 @@ def input_string(prompt): #Function for string validation, just in case
 
 if __name__ == "__main__":
     main_menu()
+
 
