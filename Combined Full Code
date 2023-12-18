@@ -355,25 +355,26 @@ def display_previous_analysis():
     print ("\nYou have chosen to display the previous analysis")
     saved_analysis = retrieve_saved_analysis() # Retreive and displays the saved analysis
 
-# Function that saves the provided anlysis results to a file
+# Function that saves the provided anlysis results to a binary file
 # The user is prompted to enter the filename
 def saved_analysis(results):
     print("\nYou have successfully saved your analysis!")
     # The user assigns a name to the file with the analysis as they may want to save a number of them
-    filename = input_string("Enter the filename to save the analysis: ") + ".txt" 
-    with open(filename, 'w') as file: # Opens the file in write mode and saves the results
+    filename = input_string("Enter the filename to save the analysis: ") + ".bin" 
+    with open(filename, 'wb') as file: # Opens the file in write mode and saves the results
         for key, value in results.items():
-            file.write(f"{key}: {value}\n")
+            line = f"{key}: {value}\n"
+            file.write(line.encode('utf-8')) #Encoding string to bytes
     print("\nAnalysis saved successfully in '{}'.".format(filename)) # Notifies the user that the file has been saved
 
 # A function to retrieve and display a previously saved analysis
 def retrieve_saved_analysis():
-    filename = input_string("Enter the filename of the saved analysis: ") + ".txt" # Asks the user for the filename of the analysis they want
+    filename = input_string("Enter the filename of the saved analysis: ") + ".bin" # Asks the user for the filename of the analysis they want
     try: # Opens the file and reads its contents
-        with open(filename, 'r') as file:
+        with open(filename, 'rb') as file:
             print("\nSaved Analysis:")
             for line in file:
-                print(line.strip())
+                print(line.decode('utf-8').strip())
     except FileNotFoundError: # Notifies the user if the file is not found
         print("\nFile not found. Please make sure the filename is correct.")
 
